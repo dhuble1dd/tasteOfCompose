@@ -1,4 +1,4 @@
-package com.example.tasteofcompose.composables
+package com.example.tasteofcompose.composables.componens
 
 
 import androidx.compose.foundation.background
@@ -7,13 +7,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
 import androidx.compose.foundation.text.appendInlineContent
-import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,25 +33,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tasteofcompose.R
+import com.example.tasteofcompose.ui.theme.AppTheme
 
 
 @Composable
-fun ConfirmButtons(text: String){
+fun ConfirmButtons(buttontext: String, buttonHandler: ()->Unit){
     val isChecked = remember {
         mutableStateOf(false)
     }
-    val annotatedString = buildAnnotatedString {
-        append("Copyright ")
-        appendInlineContent(id = "imageId")
-        append(" 2022 Delizioso")
-    }
-    val inlineContentMap = mapOf(
-        "imageId" to InlineTextContent(
-            Placeholder(24.sp, 24.sp, PlaceholderVerticalAlign.TextCenter)
-        ) {
-            Icon(painterResource(id = R.drawable.copyright), "Copyright", tint = Color.LightGray)
-        }
-    )
+//    val annotatedString = buildAnnotatedString {
+//        append("Copyright ©")
+//        appendInlineContent(id = "imageId")
+//        append(" 2022 Delizioso")
+//    }
+//    val inlineContentMap = mapOf(
+//        "imageId" to InlineTextContent(
+//            Placeholder(24.sp, 24.sp, PlaceholderVerticalAlign.TextCenter)
+//        ) {
+//            Icon(painterResource(id = R.drawable.copyright), "Copyright", tint = Color.LightGray)
+//        }
+//    )
 
     Row(
         horizontalArrangement = Arrangement.Center,
@@ -63,22 +66,30 @@ fun ConfirmButtons(text: String){
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
             ){
-                Checkbox(checked = isChecked.value, onCheckedChange = {isChecked.value = !isChecked.value}, modifier = Modifier.padding(0.dp))
+                Checkbox(
+                    checked = isChecked.value,
+                    onCheckedChange = {isChecked.value = !isChecked.value},
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = AppTheme.colors.primaryTintColor,
+                        uncheckedColor = AppTheme.colors.borderColor
+                    ),
+                    modifier = Modifier.padding(0.dp)
+                )
                 Text(text = "Remember me", style = MaterialTheme.typography.bodySmall, modifier = Modifier.padding(end = 5.dp))
-                Text(text = "Forget password?", style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center, modifier = Modifier.clickable {  })
+                Text(text = "Forget password?", style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center, modifier = Modifier.clickable (onClick = buttonHandler))
             }
             Row (
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .clickable { }
-                    .background(Color(255, 167, 64), RoundedCornerShape(50))
+                    .background(AppTheme.colors.primaryTintColor, RoundedCornerShape(10))
                     .padding(vertical = 10.dp)
                     .height(30.dp)
             ){
                Text(
-                   text = text,
-                   color = Color.White,
+                   text = buttontext,
+                   color = AppTheme.colors.primaryTextInvertColor,
                    textAlign = TextAlign.Center,
                    modifier = Modifier
                        .weight(1F)
@@ -91,7 +102,7 @@ fun ConfirmButtons(text: String){
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .clickable { }
-                    .border(1.dp, Color.LightGray, RoundedCornerShape(50))
+                    .border(1.dp, AppTheme.colors.borderColor, RoundedCornerShape(10))
                     .padding(
                         start = 12.dp,
                         end = 16.dp,
@@ -106,12 +117,13 @@ fun ConfirmButtons(text: String){
                     tint = Color.Unspecified
                 )
                 Text(
-                    text = "$text with google",
+                    text = "$buttontext with google",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1F)
                 )
             }
+            Spacer(modifier = Modifier.weight(1F))
             Row (
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically,
@@ -119,8 +131,8 @@ fun ConfirmButtons(text: String){
                     .padding(top = 100.dp)
             ){
                 Text(
-                    annotatedString, inlineContent = inlineContentMap,
-                    color = Color.LightGray,
+                    text = "Copyright © 2022 Delizioso",
+                    color = AppTheme.colors.hintTextColor,
                     textAlign = TextAlign.Center,
                     modifier = Modifier
                         .weight(1F)

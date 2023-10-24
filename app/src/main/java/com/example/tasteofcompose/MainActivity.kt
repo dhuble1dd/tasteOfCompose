@@ -3,23 +3,35 @@ package com.example.tasteofcompose
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.runtime.SideEffect
+import com.example.tasteofcompose.composables.screens.MainScreen
+import com.example.tasteofcompose.ui.theme.AppTheme
+
 import com.example.tasteofcompose.ui.theme.TasteOfComposeTheme
-import com.example.tasteofcompose.composables.*
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
 //            SignUpScreen()
-            LogInScreen()
+//            LogInScreen()
+            TasteOfComposeTheme {
+                val systemUiController = rememberSystemUiController()
+
+                // Set status bar color
+                val primaryBackground = AppTheme.colors.primaryBackground
+                SideEffect {
+                    systemUiController.setSystemBarsColor(
+                        color = primaryBackground,
+                        darkIcons = true
+                    )
+                }
+                MainScreen()
+            }
+
         }
     }
 }
